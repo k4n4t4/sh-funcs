@@ -1,32 +1,32 @@
-#!/bin/sh
+#!/usr/bin/env dash
 set -eu
 
 dir_name() {
-  RET="${1:-"."}"
-  RET="${RET%"${RET##*[!"/"]}"}"
+  RET="${1:-.}"
+  RET="${RET%"${RET##*[!/]}"}"
   case "$RET" in
-    ( "" ) RET="/" ;;
-    ( *"/"* )
-      RET="${RET%"/"*}"
-      RET="${RET%"${RET##*[!"/"]}"}"
-      case "$RET" in ( "" )
-        RET="/"
-      esac
+    ( "" )
+      RET="/"
       ;;
-    ( * ) RET="." ;;
+    ( *"/"* )
+      RET="${RET%/*}"
+      RET="${RET%"${RET##*[!/]}"}"
+      if [ "$RET" = "" ]; then
+        RET="/"
+      fi
+      ;;
+    ( * )
+      RET="."
+      ;;
   esac
 }
 
 base_name() {
-  RET="$1"
+  RET="${1:-.}"
+  RET="${RET%"${RET##*[!/]}"}"
+  RET="${RET##*/}"
   if [ "$RET" = "" ]; then
-    RET="."
-  else
-    RET="${RET%"${RET##*[!/]}"}"
-    RET="${RET##*/}"
-    if [ "$RET" = "" ]; then
-      RET="/"
-    fi
+    RET="/"
   fi
 }
 
@@ -344,5 +344,3 @@ pop_val() {
   done
   RET="$1"
 }
-
-
