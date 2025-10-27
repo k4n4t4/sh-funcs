@@ -14,7 +14,6 @@ base_name() {
   fi
 }
 
-
 base_name() {
   RET="${1:-}"
   case "$RET" in
