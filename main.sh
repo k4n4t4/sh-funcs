@@ -11,7 +11,7 @@ dir_name() {
     ( *"/"* )
       RET="${RET%/*}"
       RET="${RET%"${RET##*[!/]}"}"
-      if [ "$RET" = "" ]; then
+      if [ -z "$RET" ]; then
         RET="/"
       fi
       ;;
@@ -25,7 +25,7 @@ base_name() {
   RET="${1:-.}"
   RET="${RET%"${RET##*[!/]}"}"
   RET="${RET##*/}"
-  if [ "$RET" = "" ]; then
+  if [ -z "$RET" ]; then
     RET="/"
   fi
 }
@@ -202,7 +202,7 @@ opt_parser() {
         fi
 
         _opt_parser_short_opts="${1#'-'}"
-        while [ "$_opt_parser_short_opts" != "" ]; do
+        while [ -n "$_opt_parser_short_opts" ]; do
           _opt_parser_short_opt="-${_opt_parser_short_opts%"${_opt_parser_short_opts#?}"}"
           opt_parser_get_arg_count "$_opt_parser_short_opt" "$_opt_parser_options"
           if [ "$RET" -eq 0 ] && [ "$_opt_parser_short_opt" != '--' ]; then
