@@ -1,21 +1,19 @@
 #!/bin/sh
 set -eu
 
-dir_name() {
-  RET="${1:-"."}"
-  RET="${RET%"${RET##*[!"/"]}"}"
-  case "$RET" in
-    ( "" ) RET="/" ;;
-    ( *"/"* )
-      RET="${RET%"/"*}"
-      RET="${RET%"${RET##*[!"/"]}"}"
-      case "$RET" in ( "" )
-        RET="/"
-      esac
-      ;;
-    ( * ) RET="." ;;
-  esac
+base_name() {
+  RET="$1"
+  if [ "$RET" = "" ]; then
+    RET="."
+  else
+    RET="${RET%"${RET##*[!/]}"}"
+    RET="${RET##*/}"
+    if [ "$RET" = "" ]; then
+      RET="/"
+    fi
+  fi
 }
+
 
 base_name() {
   RET="${1:-}"
@@ -345,5 +343,3 @@ pop_val() {
   done
   RET="$1"
 }
-
-
