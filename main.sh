@@ -1,6 +1,22 @@
 #!/bin/sh
 set -eu
 
+dir_name() {
+  RET="${1:-"."}"
+  RET="${RET%"${RET##*[!"/"]}"}"
+  case "$RET" in
+    ( "" ) RET="/" ;;
+    ( *"/"* )
+      RET="${RET%"/"*}"
+      RET="${RET%"${RET##*[!"/"]}"}"
+      case "$RET" in ( "" )
+        RET="/"
+      esac
+      ;;
+    ( * ) RET="." ;;
+  esac
+}
+
 base_name() {
   RET="$1"
   if [ "$RET" = "" ]; then
@@ -12,20 +28,6 @@ base_name() {
       RET="/"
     fi
   fi
-}
-
-base_name() {
-  RET="${1:-}"
-  case "$RET" in
-    ( "" ) : ;;
-    ( * )
-      RET="${RET%"${RET##*[!"/"]}"}"
-      case "$RET" in
-        ( "" ) RET="/" ;;
-        ( * ) RET="${RET##*"/"}" ;;
-      esac
-      ;;
-  esac
 }
 
 abs_path() {
@@ -342,3 +344,5 @@ pop_val() {
   done
   RET="$1"
 }
+
+
