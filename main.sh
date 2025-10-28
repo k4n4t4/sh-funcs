@@ -88,6 +88,15 @@ is_broken_symlink() {
   fi
 }
 
+is_deletable() {
+  dir_name "$1"
+  if [ -w "$RET" ] && [ -x "$RET" ]; then
+    return 0
+  else
+    return 1
+  fi
+}
+
 is_number() {
   case "$1" in
     ( *[!0123456789]* )
