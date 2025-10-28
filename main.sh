@@ -32,24 +32,22 @@ base_name() {
 
 abs_path() {
   TMP="$PWD"
-  dir_name "$1"
-  cd -- "$RET" || return 1
-  base_name "$1"
-  set -- "$PWD" "/" "$RET"
-  case "$1" in
-    ( "/" | "//" )
-      set -- "$1" "" "$3"
-      ;;
-  esac
-  case "$3" in
-    ( "/" )  RET="$1$2" ;;
-    ( "." | "" )  RET="$1" ;;
-    ( ".." )
-      cd ..
-      RET="$PWD"
-      ;;
-    ( * ) RET="$1$2$3" ;;
-  esac
+  if [ -d "$1" ]; then
+    cd -- "$1" || return 1
+    RET="$PWD"
+  else
+    dir_name "$1"
+    cd -- "$RET" || return 1
+    base_name "$1"
+    case "$PWD" in
+      ( "/" | "//" )
+        RET="/$RET"
+        ;;
+      ( * )
+        RET="$PWD/$RET"
+        ;;
+    esac
+  fi
   cd -- "$TMP" || return 1
 }
 
