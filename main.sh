@@ -51,7 +51,7 @@ abs_path() {
   cd -- "$TMP" || return 1
 }
 
-cmd_exist() {
+cmd_exists() {
   if command -v -- "$1" > /dev/null 2>&1; then
     return 0
   else
@@ -72,7 +72,7 @@ is_empty_dir() {
   return 0
 }
 
-is_exist_file() {
+file_exists() {
   if [ -e "$1" ] || [ -L "$1" ]; then
     return 0
   else
@@ -80,7 +80,7 @@ is_exist_file() {
   fi
 }
 
-is_exist_symlink() {
+symlink_exists() {
   if [ -e "$1" ] && [ -L "$1" ]; then
     return 0
   else
