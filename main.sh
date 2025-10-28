@@ -72,8 +72,16 @@ is_empty_dir() {
   return 0
 }
 
-file_exist() {
+is_exist_file() {
   if [ -e "$1" ] || [ -L "$1" ]; then
+    return 0
+  else
+    return 1
+  fi
+}
+
+is_exist_symlink() {
+  if [ -e "$1" ] && [ -L "$1" ]; then
     return 0
   else
     return 1
